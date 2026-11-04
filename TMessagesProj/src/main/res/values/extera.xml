@@ -29,6 +29,9 @@
     <string name="BypassNoForwardsDetail">Enables copying text, forwarding messages, and saving media from restricted channels and chats.</string>
     <string name="SaveSelfDestructing">Keep Self-Destructing Media</string>
     <string name="SaveSelfDestructingDetail">Disables automatic self-destruction timers for expiring photos and videos.</string>
+    <string name="AlkogramSelfBotHeader">Built-in Self-Bot</string>
+    <string name="AlkogramSelfBotTitle">Enable Self-Bot Commands</string>
+    <string name="AlkogramSelfBotDetail">Automatically handles self-bot commands like ".alko" to immediately replace your command with the Alkogram info card without any external login.</string>
     <string name="AntiDeleteMessages">Anti-Delete Messages</string>
     <string name="AntiDeleteMessagesDetail">Keeps incoming messages in local cache when other users delete them.</string>
 

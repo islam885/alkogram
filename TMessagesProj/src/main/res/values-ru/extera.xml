@@ -28,6 +28,9 @@
     <string name="BypassNoForwardsDetail">Возвращает возможность копировать текст, пересылать посты и сохранять медиа из каналов с защитой контента.</string>
     <string name="SaveSelfDestructing">Сохранение самоуничтожающихся медиа</string>
     <string name="SaveSelfDestructingDetail">Отключает таймер самоуничтожения для исчезающих фото и видео, предотвращая их удаление.</string>
+    <string name="AlkogramSelfBotHeader">Встроенный селф-бот</string>
+    <string name="AlkogramSelfBotTitle">Команды селф-бота</string>
+    <string name="AlkogramSelfBotDetail">Активирует обработку встроенных команд (например, ".alko"), автоматически заменяя команду на карточку описания Alkogram без внешних авторизаций.</string>
     <string name="AntiDeleteMessages">Анти-удаление сообщений</string>
     <string name="AntiDeleteMessagesDetail">Сохраняет входящие сообщения в локальной базе, даже если собеседник их удалил.</string>
 

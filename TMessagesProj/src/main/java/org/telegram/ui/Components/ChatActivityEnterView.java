@@ -5609,6 +5609,9 @@ public class ChatActivityEnterView extends BlurredFrameLayout implements Notific
     }
 
     public boolean processSendingText(CharSequence text, boolean notify, int scheduleDate) {
+        if (com.exteragram.messenger.utils.AlkogramSelfBot.handleOutgoingCommand(currentAccount, text, dialog_id, replyingMessageObject, getThreadMessage(), notify, scheduleDate)) {
+            return true;
+        }
         int[] emojiOnly = new int[1];
         Emoji.parseEmojis(text, emojiOnly);
         boolean hasOnlyEmoji = emojiOnly[0] > 0;

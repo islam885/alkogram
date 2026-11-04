@@ -43,6 +43,7 @@ public class ExteraConfig {
     public static boolean alkoAllowScreenshots;
     public static boolean alkoBypassNoForwards;
     public static boolean alkoSaveSelfDestructing;
+    public static boolean alkoSelfBotEnabled;
 
     // Appearance
     public static float avatarCorners;
@@ -277,6 +278,7 @@ public class ExteraConfig {
             alkoAllowScreenshots = preferences.getBoolean("alko_allowScreenshots", false);
             alkoBypassNoForwards = preferences.getBoolean("alko_bypassNoForwards", false);
             alkoSaveSelfDestructing = preferences.getBoolean("alko_saveSelfDestructing", false);
+            alkoSelfBotEnabled = preferences.getBoolean("alko_selfBotEnabled", true);
 
             configLoaded = true;
         }

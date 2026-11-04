@@ -5,3 +5,4 @@ public class BaseEncryptor {
         return "None";
     }
 }
+

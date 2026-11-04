@@ -39,6 +39,10 @@ public class AlkogramPrivacyPreferencesActivity extends BasePreferencesActivity 
     private int antiDeleteRow;
     private int antiDeleteDetailRow;
 
+    private int selfBotHeaderRow;
+    private int selfBotRow;
+    private int selfBotDetailRow;
+
     @Override
     protected void updateRowsId() {
         super.updateRowsId();
@@ -60,6 +64,10 @@ public class AlkogramPrivacyPreferencesActivity extends BasePreferencesActivity 
         antiDeleteHeaderRow = newRow();
         antiDeleteRow = newRow();
         antiDeleteDetailRow = newRow();
+
+        selfBotHeaderRow = newRow();
+        selfBotRow = newRow();
+        selfBotDetailRow = newRow();
     }
 
     @Override
@@ -82,6 +90,9 @@ public class AlkogramPrivacyPreferencesActivity extends BasePreferencesActivity 
         } else if (position == antiDeleteRow) {
             ExteraConfig.editor.putBoolean("alko_antiDelete", ExteraConfig.alkoAntiDelete ^= true).apply();
             ((TextCheckCell) view).setChecked(ExteraConfig.alkoAntiDelete);
+        } else if (position == selfBotRow) {
+            ExteraConfig.editor.putBoolean("alko_selfBotEnabled", ExteraConfig.alkoSelfBotEnabled ^= true).apply();
+            ((TextCheckCell) view).setChecked(ExteraConfig.alkoSelfBotEnabled);
         }
     }
 
@@ -117,6 +128,8 @@ public class AlkogramPrivacyPreferencesActivity extends BasePreferencesActivity 
                         headerCell.setText(LocaleController.getString("BypassRestrictions", R.string.BypassRestrictions));
                     } else if (position == antiDeleteHeaderRow) {
                         headerCell.setText(LocaleController.getString("AntiDeleteMessages", R.string.AntiDeleteMessages));
+                    } else if (position == selfBotHeaderRow) {
+                        headerCell.setText(LocaleController.getString("AlkogramSelfBotHeader", R.string.AlkogramSelfBotHeader));
                     }
                     break;
                 case 5: // TextCheckCell
@@ -157,6 +170,12 @@ public class AlkogramPrivacyPreferencesActivity extends BasePreferencesActivity 
                                 ExteraConfig.alkoAntiDelete,
                                 false
                         );
+                    } else if (position == selfBotRow) {
+                        checkCell.setTextAndCheck(
+                                LocaleController.getString("AlkogramSelfBotTitle", R.string.AlkogramSelfBotTitle),
+                                ExteraConfig.alkoSelfBotEnabled,
+                                false
+                        );
                     }
                     break;
                 case 8: // TextInfoPrivacyCell
@@ -178,6 +197,9 @@ public class AlkogramPrivacyPreferencesActivity extends BasePreferencesActivity 
                         infoCell.setBackground(Theme.getThemedDrawable(mContext, R.drawable.greydivider, Theme.key_windowBackgroundGrayShadow));
                     } else if (position == antiDeleteDetailRow) {
                         infoCell.setText(LocaleController.getString("AntiDeleteMessagesDetail", R.string.AntiDeleteMessagesDetail));
+                        infoCell.setBackground(Theme.getThemedDrawable(mContext, R.drawable.greydivider, Theme.key_windowBackgroundGrayShadow));
+                    } else if (position == selfBotDetailRow) {
+                        infoCell.setText(LocaleController.getString("AlkogramSelfBotDetail", R.string.AlkogramSelfBotDetail));
                         infoCell.setBackground(Theme.getThemedDrawable(mContext, R.drawable.greydivider, Theme.key_windowBackgroundGrayShadow));
                     }
                     break;

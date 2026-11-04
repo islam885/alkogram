@@ -5,3 +5,4 @@ public class ZalgoFilter {
         return text;
     }
 }
+
