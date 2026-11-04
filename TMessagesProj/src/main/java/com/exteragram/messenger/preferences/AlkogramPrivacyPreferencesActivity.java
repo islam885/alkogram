@@ -26,6 +26,10 @@ public class AlkogramPrivacyPreferencesActivity extends BasePreferencesActivity 
     private int hideReadDetailRow;
     private int hideTypingRow;
     private int hideTypingDetailRow;
+    private int hideOnlineRow;
+    private int hideOnlineDetailRow;
+    private int hideVoiceReadRow;
+    private int hideVoiceReadDetailRow;
 
     private int bypassHeaderRow;
     private int allowScreenshotsRow;
@@ -52,6 +56,10 @@ public class AlkogramPrivacyPreferencesActivity extends BasePreferencesActivity 
         hideReadDetailRow = newRow();
         hideTypingRow = newRow();
         hideTypingDetailRow = newRow();
+        hideOnlineRow = newRow();
+        hideOnlineDetailRow = newRow();
+        hideVoiceReadRow = newRow();
+        hideVoiceReadDetailRow = newRow();
 
         bypassHeaderRow = newRow();
         allowScreenshotsRow = newRow();
@@ -78,6 +86,12 @@ public class AlkogramPrivacyPreferencesActivity extends BasePreferencesActivity 
         } else if (position == hideTypingRow) {
             ExteraConfig.editor.putBoolean("alko_hideTyping", ExteraConfig.alkoHideTyping ^= true).apply();
             ((TextCheckCell) view).setChecked(ExteraConfig.alkoHideTyping);
+        } else if (position == hideOnlineRow) {
+            ExteraConfig.editor.putBoolean("alko_hideOnline", ExteraConfig.alkoHideOnline ^= true).apply();
+            ((TextCheckCell) view).setChecked(ExteraConfig.alkoHideOnline);
+        } else if (position == hideVoiceReadRow) {
+            ExteraConfig.editor.putBoolean("alko_hideVoiceRead", ExteraConfig.alkoHideVoiceRead ^= true).apply();
+            ((TextCheckCell) view).setChecked(ExteraConfig.alkoHideVoiceRead);
         } else if (position == allowScreenshotsRow) {
             ExteraConfig.editor.putBoolean("alko_allowScreenshots", ExteraConfig.alkoAllowScreenshots ^= true).apply();
             ((TextCheckCell) view).setChecked(ExteraConfig.alkoAllowScreenshots);
@@ -146,6 +160,18 @@ public class AlkogramPrivacyPreferencesActivity extends BasePreferencesActivity 
                                 ExteraConfig.alkoHideTyping,
                                 false
                         );
+                    } else if (position == hideOnlineRow) {
+                        checkCell.setTextAndCheck(
+                                LocaleController.getString("HideOnlineStatus", R.string.HideOnlineStatus),
+                                ExteraConfig.alkoHideOnline,
+                                false
+                        );
+                    } else if (position == hideVoiceReadRow) {
+                        checkCell.setTextAndCheck(
+                                LocaleController.getString("HideVoiceReadStatus", R.string.HideVoiceReadStatus),
+                                ExteraConfig.alkoHideVoiceRead,
+                                false
+                        );
                     } else if (position == allowScreenshotsRow) {
                         checkCell.setTextAndCheck(
                                 LocaleController.getString("AllowScreenshots", R.string.AllowScreenshots),
@@ -185,6 +211,12 @@ public class AlkogramPrivacyPreferencesActivity extends BasePreferencesActivity 
                         infoCell.setBackground(Theme.getThemedDrawable(mContext, R.drawable.greydivider, Theme.key_windowBackgroundGrayShadow));
                     } else if (position == hideTypingDetailRow) {
                         infoCell.setText(LocaleController.getString("HideTypingStatusDetail", R.string.HideTypingStatusDetail));
+                        infoCell.setBackground(Theme.getThemedDrawable(mContext, R.drawable.greydivider, Theme.key_windowBackgroundGrayShadow));
+                    } else if (position == hideOnlineDetailRow) {
+                        infoCell.setText(LocaleController.getString("HideOnlineStatusDetail", R.string.HideOnlineStatusDetail));
+                        infoCell.setBackground(Theme.getThemedDrawable(mContext, R.drawable.greydivider, Theme.key_windowBackgroundGrayShadow));
+                    } else if (position == hideVoiceReadDetailRow) {
+                        infoCell.setText(LocaleController.getString("HideVoiceReadStatusDetail", R.string.HideVoiceReadStatusDetail));
                         infoCell.setBackground(Theme.getThemedDrawable(mContext, R.drawable.greydivider, Theme.key_windowBackgroundGrayShadow));
                     } else if (position == allowScreenshotsDetailRow) {
                         infoCell.setText(LocaleController.getString("AllowScreenshotsDetail", R.string.AllowScreenshotsDetail));

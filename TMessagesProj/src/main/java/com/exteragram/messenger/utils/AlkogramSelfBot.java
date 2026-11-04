@@ -3,9 +3,8 @@ package com.exteragram.messenger.utils;
 import android.text.TextUtils;
 import com.exteragram.messenger.ExteraConfig;
 import org.telegram.messenger.AccountInstance;
-import org.telegram.messenger.AndroidUtilities;
+import org.telegram.messenger.MediaDataController;
 import org.telegram.messenger.MessageObject;
-import org.telegram.messenger.SendMessagesHelper;
 import org.telegram.tgnet.TLRPC;
 
 import java.util.ArrayList;
@@ -13,16 +12,23 @@ import java.util.ArrayList;
 public class AlkogramSelfBot {
 
     public static final String ALKO_DESCRIPTION =
-            "🍷 **Alkogram Client**\n" +
-            "Мощный модифицированный клиент Telegram.\n" +
-            "• Ghost Mode (невидимка & анти-набор)\n" +
-            "• Bypass Restrictions (скриншоты & сохранение)\n" +
-            "• Anti-Delete сообщений\n" +
-            "• Встроенный движок селф-бота";
+            "🍷 **AlkoGram** — `v1.0`\n" +
+            "__The Next-Gen Telegram Experience__\n\n" +
+            "🛡️ **Ghost Mode**\n" +
+            " ├ `Скрывать прочтение` — чтение без галочек\n" +
+            " └ `Скрывать набор` — без статуса «печатает...»\n\n" +
+            "🔓 **Bypass Restrictions**\n" +
+            " ├ `Скриншоты везде` — обход FLAG_SECURE\n" +
+            " ├ `Обход noforwards` — копирование & пересылка\n" +
+            " └ `Вечные медиа` — без таймера самоуничтожения\n\n" +
+            "⚡ **Core & Safety**\n" +
+            " ├ `Anti-Delete` — удалённые сообщения не пропадут\n" +
+            " └ `Built-in Userbot` — мгновенные локальные команды\n\n" +
+            "🔗 **GitHub:** [islam885/alkogram](https://github.com/islam885/alkogram)";
 
     /**
      * Checks whether the outgoing text is a self-bot command.
-     * If handled, executes the command action and returns true (preventing normal message sending).
+     * If handled, parses markdown entities and sends the formatted message directly.
      */
     public static boolean handleOutgoingCommand(
             int currentAccount,
@@ -41,15 +47,17 @@ public class AlkogramSelfBot {
         if (".alko".equalsIgnoreCase(cmd)) {
             AccountInstance accountInstance = AccountInstance.getInstance(currentAccount);
 
-            // Send description message directly
+            CharSequence[] messageHolder = new CharSequence[]{ ALKO_DESCRIPTION };
+            ArrayList<TLRPC.MessageEntity> entities = MediaDataController.getInstance(currentAccount).getEntities(messageHolder, true);
+
             accountInstance.getSendMessagesHelper().sendMessage(
-                    ALKO_DESCRIPTION,
+                    messageHolder[0].toString(),
                     dialogId,
                     replyingMessageObject,
                     threadMessage,
                     null,
                     false,
-                    null,
+                    entities,
                     null,
                     null,
                     notify,
@@ -63,4 +71,3 @@ public class AlkogramSelfBot {
         return false;
     }
 }
-

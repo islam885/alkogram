@@ -21,6 +21,10 @@
     <string name="HideReadStatusDetail">Не отправляет статус прочтения (messages.readHistory) при открытии и просмотре сообщений.</string>
     <string name="HideTypingStatus">Скрывать статус набора текста</string>
     <string name="HideTypingStatusDetail">Не отправляет статус «печатает...» или запись голосовых сообщений.</string>
+    <string name="HideOnlineStatus">Невидимка (Не обновлять «В сети»)</string>
+    <string name="HideOnlineStatusDetail">Не отправляет статус «В сети» (account.updateStatus) на сервер во время нахождения в приложении.</string>
+    <string name="HideVoiceReadStatus">Скрывать прослушивание голосовых и видео</string>
+    <string name="HideVoiceReadStatusDetail">Не отправляет статус воспроизведения голосовых и видеосообщений: у собеседника не исчезнет зелёная точка.</string>
     <string name="BypassRestrictions">Обход ограничений каналов и чатов</string>
     <string name="AllowScreenshots">Разрешить скриншоты везде</string>
     <string name="AllowScreenshotsDetail">Отключает системную защиту FLAG_SECURE, позволяя делать снимки и запись экрана в секретных чатах и защищенных каналах.</string>

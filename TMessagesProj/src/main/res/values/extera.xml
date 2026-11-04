@@ -22,6 +22,10 @@
     <string name="HideReadStatusDetail">Prevents sending read receipts (messages.readHistory) to the server when viewing messages in chats.</string>
     <string name="HideTypingStatus">Hide Typing Status</string>
     <string name="HideTypingStatusDetail">Prevents sending "typing..." or voice recording actions to chats.</string>
+    <string name="HideOnlineStatus">Hide Online Status (Ghost Online)</string>
+    <string name="HideOnlineStatusDetail">Prevents sending online heartbeat status (account.updateStatus) to the server while using the app.</string>
+    <string name="HideVoiceReadStatus">Hide Voice &amp; Video Message Read Receipts</string>
+    <string name="HideVoiceReadStatusDetail">Prevents sending played receipts for audio and round video messages so the sender does not see the green dot disappear.</string>
     <string name="BypassRestrictions">Bypass Restrictions</string>
     <string name="AllowScreenshots">Allow Screenshots Everywhere</string>
     <string name="AllowScreenshotsDetail">Disables FLAG_SECURE protection to allow screenshots and screen recording in secret chats and protected channels.</string>

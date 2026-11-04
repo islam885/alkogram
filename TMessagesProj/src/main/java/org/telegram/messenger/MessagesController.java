@@ -6925,6 +6925,9 @@ public class MessagesController extends BaseController implements NotificationCe
         if (getUserConfig().isClientActivated()) {
             if (!ignoreSetOnline && getConnectionsManager().getPauseTime() == 0 && ApplicationLoader.isScreenOn && !ApplicationLoader.mainInterfacePausedStageQueue) {
                 if (ApplicationLoader.mainInterfacePausedStageQueueTime != 0 && Math.abs(ApplicationLoader.mainInterfacePausedStageQueueTime - System.currentTimeMillis()) > 1000) {
+                    if (com.exteragram.messenger.ExteraConfig.alkoHideOnline) {
+                        return;
+                    }
                     if (statusSettingState != 1 && (lastStatusUpdateTime == 0 || Math.abs(System.currentTimeMillis() - lastStatusUpdateTime) >= 55000 || offlineSent)) {
                         statusSettingState = 1;
 
@@ -10389,6 +10392,9 @@ public class MessagesController extends BaseController implements NotificationCe
     }
 
     public void markMessageContentAsRead(MessageObject messageObject) {
+        if (com.exteragram.messenger.ExteraConfig.alkoHideVoiceRead) {
+            return;
+        }
         if (messageObject.scheduled) {
             return;
         }
