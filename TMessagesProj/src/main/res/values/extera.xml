@@ -15,6 +15,16 @@
     <string name="exteraAppName" translatable="false">exteraGram</string>
     <string name="Preferences">exteraGram Preferences</string>
 
+    <!-- Alkogram Settings -->
+    <string name="AlkogramSettings">Alkogram Privacy &amp; Ghost</string>
+    <string name="GhostMode">Ghost Mode</string>
+    <string name="HideReadStatus">Hide Read Status</string>
+    <string name="HideReadStatusDetail">Prevents sending read receipts (messages.readHistory) to the server when viewing messages in chats.</string>
+    <string name="HideTypingStatus">Hide Typing Status</string>
+    <string name="HideTypingStatusDetail">Prevents sending "typing..." or voice recording actions to chats.</string>
+    <string name="AntiDeleteMessages">Anti-Delete Messages</string>
+    <string name="AntiDeleteMessagesDetail">Keeps incoming messages in local cache when other users delete them.</string>
+
     <!-- Main Menu -->
     <string name="Links">Links</string>
     <string name="AboutExteraDescription">Experimental Telegram client based on Official Sources!</string>

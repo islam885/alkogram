@@ -53,6 +53,7 @@ public class MainPreferencesActivity extends BasePreferencesActivity {
     private int appearanceRow;
     private int chatsRow;
     private int otherRow;
+    private int alkogramPrivacyRow;
 
     private int categoryDividerRow;
     private int aboutExteraDividerRow;
@@ -198,6 +199,7 @@ public class MainPreferencesActivity extends BasePreferencesActivity {
         appearanceRow = newRow();
         chatsRow = newRow();
         otherRow = newRow();
+        alkogramPrivacyRow = newRow();
         categoryDividerRow = newRow();
 
         infoHeaderRow = newRow();
@@ -229,6 +231,8 @@ public class MainPreferencesActivity extends BasePreferencesActivity {
             presentFragment(new OtherPreferencesActivity());
         } else if (position == generalRow) {
             presentFragment(new GeneralPreferencesActivity());
+        } else if (position == alkogramPrivacyRow) {
+            presentFragment(new AlkogramPrivacyPreferencesActivity());
         }
     }
 
@@ -273,7 +277,9 @@ public class MainPreferencesActivity extends BasePreferencesActivity {
                     } else if (position == chatsRow) {
                         textCell.setTextAndIcon(LocaleController.getString("SearchAllChatsShort", R.string.SearchAllChatsShort), R.drawable.msg_discussion, true);
                     } else if (position == otherRow) {
-                        textCell.setTextAndIcon(LocaleController.getString("LocalOther", R.string.LocalOther), R.drawable.msg_fave, false);
+                        textCell.setTextAndIcon(LocaleController.getString("LocalOther", R.string.LocalOther), R.drawable.msg_fave, true);
+                    } else if (position == alkogramPrivacyRow) {
+                        textCell.setTextAndIcon(LocaleController.getString("AlkogramSettings", R.string.AlkogramSettings), R.drawable.msg_secret, false);
                     } else if (position == channelRow) {
                         textCell.setTextAndValueAndIcon(LocaleController.getString("Channel", R.string.Channel), "@exteraGram", R.drawable.msg_channel, true);
                     } else if (position == groupRow) {

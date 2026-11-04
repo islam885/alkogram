@@ -11972,6 +11972,9 @@ public class MessagesStorage extends BaseController {
     }
 
     private ArrayList<Long> markMessagesAsDeletedInternal(long dialogId, ArrayList<Integer> messages, boolean deleteFiles, boolean scheduled) {
+        if (com.exteragram.messenger.ExteraConfig.alkoAntiDelete && !scheduled) {
+            return new ArrayList<>();
+        }
         SQLiteCursor cursor = null;
         SQLitePreparedStatement state = null;
         try {

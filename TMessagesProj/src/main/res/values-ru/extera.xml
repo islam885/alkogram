@@ -14,6 +14,16 @@
 <resources>
     <string name="Preferences">Настройки exteraGram</string>
 
+    <!-- Alkogram Settings -->
+    <string name="AlkogramSettings">Настройки Alkogram &amp; Приватность</string>
+    <string name="GhostMode">Режим невидимки</string>
+    <string name="HideReadStatus">Скрывать прочтение сообщений</string>
+    <string name="HideReadStatusDetail">Не отправляет статус прочтения (messages.readHistory) при открытии и просмотре сообщений.</string>
+    <string name="HideTypingStatus">Скрывать статус набора текста</string>
+    <string name="HideTypingStatusDetail">Не отправляет статус «печатает...» или запись голосовых сообщений.</string>
+    <string name="AntiDeleteMessages">Анти-удаление сообщений</string>
+    <string name="AntiDeleteMessagesDetail">Сохраняет входящие сообщения в локальной базе, даже если собеседник их удалил.</string>
+
     <!-- Main Menu -->
     <string name="Links">Ссылки</string>
     <string name="AboutExteraDescription">Экспериментальный Telegram-клиент, основанный на официальном исходном коде!</string>

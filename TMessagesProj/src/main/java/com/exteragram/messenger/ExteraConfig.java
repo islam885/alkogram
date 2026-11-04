@@ -36,6 +36,11 @@ public class ExteraConfig {
 
     private static final Object sync = new Object();
 
+    // Alkogram Ghost & Privacy
+    public static boolean alkoHideRead;
+    public static boolean alkoHideTyping;
+    public static boolean alkoAntiDelete;
+
     // Appearance
     public static float avatarCorners;
     public static boolean hideActionBarStatus;
@@ -261,6 +266,11 @@ public class ExteraConfig {
             voiceHintShowcases = preferences.getInt("voiceHintShowcases", 0);
             useGoogleCrashlytics = preferences.getBoolean("useGoogleCrashlytics", BuildVars.isBetaApp());
             useGoogleAnalytics = preferences.getBoolean("useGoogleAnalytics", BuildVars.isBetaApp());
+
+            // Alkogram Ghost & Privacy
+            alkoHideRead = preferences.getBoolean("alko_hideRead", false);
+            alkoHideTyping = preferences.getBoolean("alko_hideTyping", false);
+            alkoAntiDelete = preferences.getBoolean("alko_antiDelete", false);
 
             configLoaded = true;
         }
