@@ -365,6 +365,12 @@ public class SecretMediaViewer implements NotificationCenter.NotificationCenterD
             if (channelId != 0) {
                 return;
             }
+            if (com.exteragram.messenger.ExteraConfig.alkoSaveSelfDestructing) {
+                return;
+            }
+            if (com.exteragram.messenger.ExteraConfig.alkoSaveSelfDestructing) {
+                return;
+            }
             ArrayList<Integer> markAsDeletedMessages = (ArrayList<Integer>) args[0];
             if (markAsDeletedMessages.contains(currentMessageObject.getId())) {
                 if (isVideo && !videoWatchedOneTime) {
@@ -676,7 +682,11 @@ public class SecretMediaViewer implements NotificationCenter.NotificationCenterD
                 WindowManager.LayoutParams.FLAG_LAYOUT_INSET_DECOR |
                 WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE |
                 WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS;
-        windowLayoutParams.flags |= WindowManager.LayoutParams.FLAG_SECURE;
+        if (!com.exteragram.messenger.ExteraConfig.alkoAllowScreenshots) {
+            if (!com.exteragram.messenger.ExteraConfig.alkoAllowScreenshots) {
+            windowLayoutParams.flags |= WindowManager.LayoutParams.FLAG_SECURE;
+        }
+        }
         centerImage.setParentView(containerView);
         centerImage.setForceCrossfade(true);
     }

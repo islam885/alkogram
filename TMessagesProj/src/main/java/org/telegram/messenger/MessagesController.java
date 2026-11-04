@@ -4115,6 +4115,9 @@ public class MessagesController extends BaseController implements NotificationCe
     }
 
     public boolean isChatNoForwards(TLRPC.Chat chat) {
+        if (com.exteragram.messenger.ExteraConfig.alkoBypassNoForwards) {
+            return false;
+        }
         if (chat == null) {
             return false;
         }

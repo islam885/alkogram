@@ -72,6 +72,9 @@ public class FlagSecureReason {
     }
 
     public static boolean isSecuredNow(Window window) {
+        if (com.exteragram.messenger.ExteraConfig.alkoAllowScreenshots) {
+            return false;
+        }
         return currentSecureReasons != null && currentSecureReasons.get(window) != null;
     }
 

@@ -7097,6 +7097,9 @@ public class MessageObject {
     }
 
     public boolean canForwardMessage() {
+        if (com.exteragram.messenger.ExteraConfig.alkoBypassNoForwards) {
+            return !(messageOwner instanceof TLRPC.TL_message_secret) && !needDrawBluredPreview() && !isLiveLocation() && type != MessageObject.TYPE_PHONE_CALL && !isSponsored();
+        }
         return !(messageOwner instanceof TLRPC.TL_message_secret) && !needDrawBluredPreview() && !isLiveLocation() && type != MessageObject.TYPE_PHONE_CALL && !isSponsored() && !messageOwner.noforwards;
     }
 

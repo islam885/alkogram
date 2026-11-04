@@ -21,6 +21,13 @@
     <string name="HideReadStatusDetail">Не отправляет статус прочтения (messages.readHistory) при открытии и просмотре сообщений.</string>
     <string name="HideTypingStatus">Скрывать статус набора текста</string>
     <string name="HideTypingStatusDetail">Не отправляет статус «печатает...» или запись голосовых сообщений.</string>
+    <string name="BypassRestrictions">Обход ограничений каналов и чатов</string>
+    <string name="AllowScreenshots">Разрешить скриншоты везде</string>
+    <string name="AllowScreenshotsDetail">Отключает системную защиту FLAG_SECURE, позволяя делать снимки и запись экрана в секретных чатах и защищенных каналах.</string>
+    <string name="BypassNoForwards">Обход запрета копирования и пересылки</string>
+    <string name="BypassNoForwardsDetail">Возвращает возможность копировать текст, пересылать посты и сохранять медиа из каналов с защитой контента.</string>
+    <string name="SaveSelfDestructing">Сохранение самоуничтожающихся медиа</string>
+    <string name="SaveSelfDestructingDetail">Отключает таймер самоуничтожения для исчезающих фото и видео, предотвращая их удаление.</string>
     <string name="AntiDeleteMessages">Анти-удаление сообщений</string>
     <string name="AntiDeleteMessagesDetail">Сохраняет входящие сообщения в локальной базе, даже если собеседник их удалил.</string>
 

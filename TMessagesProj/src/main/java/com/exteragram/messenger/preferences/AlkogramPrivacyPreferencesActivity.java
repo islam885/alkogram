@@ -27,6 +27,14 @@ public class AlkogramPrivacyPreferencesActivity extends BasePreferencesActivity 
     private int hideTypingRow;
     private int hideTypingDetailRow;
 
+    private int bypassHeaderRow;
+    private int allowScreenshotsRow;
+    private int allowScreenshotsDetailRow;
+    private int bypassNoForwardsRow;
+    private int bypassNoForwardsDetailRow;
+    private int saveSelfDestructingRow;
+    private int saveSelfDestructingDetailRow;
+
     private int antiDeleteHeaderRow;
     private int antiDeleteRow;
     private int antiDeleteDetailRow;
@@ -41,6 +49,14 @@ public class AlkogramPrivacyPreferencesActivity extends BasePreferencesActivity 
         hideTypingRow = newRow();
         hideTypingDetailRow = newRow();
 
+        bypassHeaderRow = newRow();
+        allowScreenshotsRow = newRow();
+        allowScreenshotsDetailRow = newRow();
+        bypassNoForwardsRow = newRow();
+        bypassNoForwardsDetailRow = newRow();
+        saveSelfDestructingRow = newRow();
+        saveSelfDestructingDetailRow = newRow();
+
         antiDeleteHeaderRow = newRow();
         antiDeleteRow = newRow();
         antiDeleteDetailRow = newRow();
@@ -54,6 +70,15 @@ public class AlkogramPrivacyPreferencesActivity extends BasePreferencesActivity 
         } else if (position == hideTypingRow) {
             ExteraConfig.editor.putBoolean("alko_hideTyping", ExteraConfig.alkoHideTyping ^= true).apply();
             ((TextCheckCell) view).setChecked(ExteraConfig.alkoHideTyping);
+        } else if (position == allowScreenshotsRow) {
+            ExteraConfig.editor.putBoolean("alko_allowScreenshots", ExteraConfig.alkoAllowScreenshots ^= true).apply();
+            ((TextCheckCell) view).setChecked(ExteraConfig.alkoAllowScreenshots);
+        } else if (position == bypassNoForwardsRow) {
+            ExteraConfig.editor.putBoolean("alko_bypassNoForwards", ExteraConfig.alkoBypassNoForwards ^= true).apply();
+            ((TextCheckCell) view).setChecked(ExteraConfig.alkoBypassNoForwards);
+        } else if (position == saveSelfDestructingRow) {
+            ExteraConfig.editor.putBoolean("alko_saveSelfDestructing", ExteraConfig.alkoSaveSelfDestructing ^= true).apply();
+            ((TextCheckCell) view).setChecked(ExteraConfig.alkoSaveSelfDestructing);
         } else if (position == antiDeleteRow) {
             ExteraConfig.editor.putBoolean("alko_antiDelete", ExteraConfig.alkoAntiDelete ^= true).apply();
             ((TextCheckCell) view).setChecked(ExteraConfig.alkoAntiDelete);
@@ -62,7 +87,7 @@ public class AlkogramPrivacyPreferencesActivity extends BasePreferencesActivity 
 
     @Override
     protected String getTitle() {
-        return "Alkogram Ghost & Privacy";
+        return "Alkogram Settings";
     }
 
     @Override
@@ -88,6 +113,8 @@ public class AlkogramPrivacyPreferencesActivity extends BasePreferencesActivity 
                     HeaderCell headerCell = (HeaderCell) holder.itemView;
                     if (position == ghostHeaderRow) {
                         headerCell.setText(LocaleController.getString("GhostMode", R.string.GhostMode));
+                    } else if (position == bypassHeaderRow) {
+                        headerCell.setText(LocaleController.getString("BypassRestrictions", R.string.BypassRestrictions));
                     } else if (position == antiDeleteHeaderRow) {
                         headerCell.setText(LocaleController.getString("AntiDeleteMessages", R.string.AntiDeleteMessages));
                     }
@@ -106,6 +133,24 @@ public class AlkogramPrivacyPreferencesActivity extends BasePreferencesActivity 
                                 ExteraConfig.alkoHideTyping,
                                 false
                         );
+                    } else if (position == allowScreenshotsRow) {
+                        checkCell.setTextAndCheck(
+                                LocaleController.getString("AllowScreenshots", R.string.AllowScreenshots),
+                                ExteraConfig.alkoAllowScreenshots,
+                                false
+                        );
+                    } else if (position == bypassNoForwardsRow) {
+                        checkCell.setTextAndCheck(
+                                LocaleController.getString("BypassNoForwards", R.string.BypassNoForwards),
+                                ExteraConfig.alkoBypassNoForwards,
+                                false
+                        );
+                    } else if (position == saveSelfDestructingRow) {
+                        checkCell.setTextAndCheck(
+                                LocaleController.getString("SaveSelfDestructing", R.string.SaveSelfDestructing),
+                                ExteraConfig.alkoSaveSelfDestructing,
+                                false
+                        );
                     } else if (position == antiDeleteRow) {
                         checkCell.setTextAndCheck(
                                 LocaleController.getString("AntiDeleteMessages", R.string.AntiDeleteMessages),
@@ -122,6 +167,15 @@ public class AlkogramPrivacyPreferencesActivity extends BasePreferencesActivity 
                     } else if (position == hideTypingDetailRow) {
                         infoCell.setText(LocaleController.getString("HideTypingStatusDetail", R.string.HideTypingStatusDetail));
                         infoCell.setBackground(Theme.getThemedDrawable(mContext, R.drawable.greydivider, Theme.key_windowBackgroundGrayShadow));
+                    } else if (position == allowScreenshotsDetailRow) {
+                        infoCell.setText(LocaleController.getString("AllowScreenshotsDetail", R.string.AllowScreenshotsDetail));
+                        infoCell.setBackground(Theme.getThemedDrawable(mContext, R.drawable.greydivider, Theme.key_windowBackgroundGrayShadow));
+                    } else if (position == bypassNoForwardsDetailRow) {
+                        infoCell.setText(LocaleController.getString("BypassNoForwardsDetail", R.string.BypassNoForwardsDetail));
+                        infoCell.setBackground(Theme.getThemedDrawable(mContext, R.drawable.greydivider, Theme.key_windowBackgroundGrayShadow));
+                    } else if (position == saveSelfDestructingDetailRow) {
+                        infoCell.setText(LocaleController.getString("SaveSelfDestructingDetail", R.string.SaveSelfDestructingDetail));
+                        infoCell.setBackground(Theme.getThemedDrawable(mContext, R.drawable.greydivider, Theme.key_windowBackgroundGrayShadow));
                     } else if (position == antiDeleteDetailRow) {
                         infoCell.setText(LocaleController.getString("AntiDeleteMessagesDetail", R.string.AntiDeleteMessagesDetail));
                         infoCell.setBackground(Theme.getThemedDrawable(mContext, R.drawable.greydivider, Theme.key_windowBackgroundGrayShadow));
@@ -131,4 +185,3 @@ public class AlkogramPrivacyPreferencesActivity extends BasePreferencesActivity 
         }
     }
 }
-

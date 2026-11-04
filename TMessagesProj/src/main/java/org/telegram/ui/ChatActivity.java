@@ -9163,6 +9163,9 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
     }
 
     private boolean hasSelectedNoforwardsMessage() {
+        if (com.exteragram.messenger.ExteraConfig.alkoBypassNoForwards) {
+            return false;
+        }
         try {
             for (SparseArrayWithTouch<MessageObject> selectedMessagesId : selectedMessagesIds) {
                 for (int j = 0; j < selectedMessagesId.size(); ++j) {
@@ -11465,6 +11468,9 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
     }
 
     private Runnable sendSecretMessageRead(MessageObject messageObject, boolean readNow) {
+        if (com.exteragram.messenger.ExteraConfig.alkoSaveSelfDestructing) {
+            return null;
+        }
         if (messageObject == null || messageObject.isOut() || !messageObject.isSecretMedia() || messageObject.messageOwner.destroyTime != 0 || messageObject.messageOwner.ttl <= 0) {
             return null;
         }
