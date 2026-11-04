@@ -24,16 +24,21 @@ jobs:
           distribution: 'temurin'
           java-version: '11'
 
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
-
       - name: Install Android Build-Tools and NDK
+        env:
+          ANDROID_SDK_ROOT: /usr/local/lib/android/sdk
         run: |
+          # Use pre-installed cmdline-tools (compatible with Java 11) or bypass JDK check
+          export PATH="$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$PATH"
+          export SKIP_JDK_VERSION_CHECK=true
+
+          echo "y" | sdkmanager --licenses || true
           sdkmanager --install "platforms;android-33" "build-tools;33.0.0" "build-tools;30.0.3" "ndk;21.4.7075529" "cmake;3.10.2.4988404"
+
           # Workaround for AGP dx tool copy if required
-          if [ -f "$ANDROID_HOME/build-tools/30.0.3/dx" ]; then
-            cp "$ANDROID_HOME/build-tools/30.0.3/dx" "$ANDROID_HOME/build-tools/33.0.0/dx" || true
-            cp "$ANDROID_HOME/build-tools/30.0.3/lib/dx.jar" "$ANDROID_HOME/build-tools/33.0.0/lib/dx.jar" || true
+          if [ -f "$ANDROID_SDK_ROOT/build-tools/30.0.3/dx" ]; then
+            cp "$ANDROID_SDK_ROOT/build-tools/30.0.3/dx" "$ANDROID_SDK_ROOT/build-tools/33.0.0/dx" || true
+            cp "$ANDROID_SDK_ROOT/build-tools/30.0.3/lib/dx.jar" "$ANDROID_SDK_ROOT/build-tools/33.0.0/lib/dx.jar" || true
           fi
 
       - name: Prepare API_KEYS and keystore
@@ -54,7 +59,6 @@ jobs:
           SIGNING_KEY_STORE_PASSWORD = ${SIGNING_KEY_STORE_PASSWORD}
           EOF
 
-          # If release keystore does not exist or needs fallback generation, generate one
           if [ ! -f "TMessagesProj/config/extera.jks" ]; then
             mkdir -p TMessagesProj/config
             keytool -genkeypair -v \
@@ -85,4 +89,3 @@ jobs:
           name: Alkogram-Release-APK
           path: output_apks/*.apk
           retention-days: 14
-
