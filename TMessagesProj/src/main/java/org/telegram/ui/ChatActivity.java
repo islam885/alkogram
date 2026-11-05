@@ -979,6 +979,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
     private final static int OPTION_DECRYPT = 203;
     private final static int OPTION_DETAILS = 204;
     private final static int OPTION_HISTORY = 205;
+    private final static int OPTION_ALKO_SAVE_ROUND_VIDEO = 206;
 
     private final static int[] allowedNotificationsDuringChatListAnimations = new int[]{
             NotificationCenter.messagesRead,
@@ -23487,6 +23488,12 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
             final ArrayList<Integer> options = new ArrayList<>();
             View optionsView = null;
 
+            if (canSaveAlkogramRoundVideo(message)) {
+                items.add(LocaleController.getString(R.string.AlkoSaveRoundVideoMp4));
+                options.add(OPTION_ALKO_SAVE_ROUND_VIDEO);
+                icons.add(R.drawable.msg_gallery);
+            }
+
             if (AndroidUtilities.isAccessibilityScreenReaderEnabled() && message.messageOwner != null && message.messageOwner.from_id != null && message.messageOwner.from_id.user_id != getUserConfig().clientUserId) {
                 items.add(LocaleController.getString(R.string.OpenProfile));
                 options.add(OPTION_OPEN_PROFILE);
@@ -25612,6 +25619,56 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
         };
     }
 
+    private boolean canSaveAlkogramRoundVideo(MessageObject message) {
+        if (!ExteraConfig.alkoSaveRoundVideo || message == null || !message.isRoundVideo()
+                || message.getDocument() == null || message.messageOwner.noforwards
+                || message.messageOwner.ttl != 0 || MessageObject.isSecretMedia(message.messageOwner)
+                || MessageObject.getMedia(message.messageOwner).ttl_seconds != 0
+                || message.needDrawBluredPreview() || message.hasRevealedExtendedMedia()
+                || currentEncryptedChat != null || chatMode == MODE_SCHEDULED || message.getId() <= 0) {
+            return false;
+        }
+        // Inspect raw flags: the existing bypass preference must NOT weaken this feature.
+        if (currentChat != null) {
+            if (currentChat.noforwards) return false;
+            if (currentChat.migrated_to != null) {
+                TLRPC.Chat migrated = getMessagesController().getChat(currentChat.migrated_to.channel_id);
+                if (migrated == null || migrated.noforwards) return false;
+            }
+        }
+        TLRPC.MessageFwdHeader forward = message.messageOwner.fwd_from;
+        if (forward != null && forward.from_id != null && forward.from_id.channel_id != 0) {
+            TLRPC.Chat origin = getMessagesController().getChat(forward.from_id.channel_id);
+            if (origin == null || origin.noforwards) return false;
+        }
+        return true;
+    }
+
+    private void saveAlkogramRoundVideo(MessageObject message) {
+        if (getParentActivity() == null || !canSaveAlkogramRoundVideo(message)) return;
+        File file = TextUtils.isEmpty(message.messageOwner.attachPath) ? null : new File(message.messageOwner.attachPath);
+        if (file == null || !file.isFile() || file.length() == 0) {
+            file = getFileLoader().getPathToMessage(message.messageOwner);
+        }
+        if (!file.isFile() || file.length() == 0
+                || getFileLoader().isLoadingFile(FileLoader.getAttachFileName(message.getDocument()))) {
+            // No automatic network request; the normal media download button remains available.
+            BulletinFactory.of(this).createSimpleBulletin(R.raw.info,
+                    LocaleController.getString(R.string.AlkoRoundVideoNotDownloaded)).show();
+            return;
+        }
+        if (Build.VERSION.SDK_INT >= 23 && (Build.VERSION.SDK_INT <= 28 || BuildVars.NO_SCOPED_STORAGE)
+                && getParentActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            getParentActivity().requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 4);
+            return; // Retry from the menu after granting permission.
+        }
+        MediaController.saveFile(file.toString(), getParentActivity(), 1, null, "video/mp4", () -> {
+            if (getParentActivity() != null) {
+                BulletinFactory.of(this).createDownloadBulletin(BulletinFactory.FileType.VIDEO, themeDelegate).show();
+            }
+        });
+    }
+
     private void saveMessageToGallery(MessageObject messageObject) {
         String path = messageObject.messageOwner.attachPath;
         if (!TextUtils.isEmpty(path)) {
@@ -25632,6 +25689,10 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
         }
         boolean preserveDim = false;
         switch (option) {
+            case OPTION_ALKO_SAVE_ROUND_VIDEO: {
+                saveAlkogramRoundVideo(selectedObject);
+                break;
+            }
             case OPTION_RETRY: {
                 if (selectedObjectGroup != null) {
                     boolean success = true;

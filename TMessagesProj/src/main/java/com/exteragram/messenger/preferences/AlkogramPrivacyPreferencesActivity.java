@@ -21,6 +21,13 @@ import org.telegram.ui.Cells.TextInfoPrivacyCell;
 
 public class AlkogramPrivacyPreferencesActivity extends BasePreferencesActivity {
 
+    private int mediaHeaderRow;
+    private int stripMetadataRow;
+    private int stripMetadataDetailRow;
+    private int saveRoundVideoRow;
+    private int saveRoundVideoDetailRow;
+    private int secondsRow;
+
     private int ghostHeaderRow;
     private int hideReadRow;
     private int hideReadDetailRow;
@@ -51,6 +58,13 @@ public class AlkogramPrivacyPreferencesActivity extends BasePreferencesActivity 
     protected void updateRowsId() {
         super.updateRowsId();
 
+        mediaHeaderRow = newRow();
+        stripMetadataRow = newRow();
+        stripMetadataDetailRow = newRow();
+        saveRoundVideoRow = newRow();
+        saveRoundVideoDetailRow = newRow();
+        secondsRow = newRow();
+
         ghostHeaderRow = newRow();
         hideReadRow = newRow();
         hideReadDetailRow = newRow();
@@ -80,7 +94,19 @@ public class AlkogramPrivacyPreferencesActivity extends BasePreferencesActivity 
 
     @Override
     protected void onItemClick(View view, int position, float x, float y) {
-        if (position == hideReadRow) {
+        if (position == stripMetadataRow) {
+            ExteraConfig.editor.putBoolean("alko_stripPhotoMetadata", ExteraConfig.alkoStripPhotoMetadata ^= true).apply();
+            ((TextCheckCell) view).setChecked(ExteraConfig.alkoStripPhotoMetadata);
+        } else if (position == saveRoundVideoRow) {
+            ExteraConfig.editor.putBoolean("alko_saveRoundVideo", ExteraConfig.alkoSaveRoundVideo ^= true).apply();
+            ((TextCheckCell) view).setChecked(ExteraConfig.alkoSaveRoundVideo);
+        } else if (position == secondsRow) {
+            // Reuse the existing preference and localized 12/24-hour formatters.
+            ExteraConfig.editor.putBoolean("formatTimeWithSeconds", ExteraConfig.formatTimeWithSeconds ^= true).apply();
+            ((TextCheckCell) view).setChecked(ExteraConfig.formatTimeWithSeconds);
+            LocaleController.getInstance().recreateFormatters();
+            parentLayout.rebuildAllFragmentViews(false, false);
+        } else if (position == hideReadRow) {
             ExteraConfig.editor.putBoolean("alko_hideRead", ExteraConfig.alkoHideRead ^= true).apply();
             ((TextCheckCell) view).setChecked(ExteraConfig.alkoHideRead);
         } else if (position == hideTypingRow) {
@@ -133,9 +159,10 @@ public class AlkogramPrivacyPreferencesActivity extends BasePreferencesActivity 
 
         @Override
         public int getItemViewType(int position) {
-            if (position == ghostHeaderRow || position == bypassHeaderRow || position == antiDeleteHeaderRow || position == selfBotHeaderRow) {
+            if (position == mediaHeaderRow || position == ghostHeaderRow || position == bypassHeaderRow || position == antiDeleteHeaderRow || position == selfBotHeaderRow) {
                 return 3;
-            } else if (position == hideReadDetailRow || position == hideTypingDetailRow || position == hideOnlineDetailRow ||
+            } else if (position == stripMetadataDetailRow || position == saveRoundVideoDetailRow ||
+                       position == hideReadDetailRow || position == hideTypingDetailRow || position == hideOnlineDetailRow ||
                        position == hideVoiceReadDetailRow || position == allowScreenshotsDetailRow || position == bypassNoForwardsDetailRow ||
                        position == saveSelfDestructingDetailRow || position == antiDeleteDetailRow || position == selfBotDetailRow) {
                 return 8;
@@ -148,7 +175,9 @@ public class AlkogramPrivacyPreferencesActivity extends BasePreferencesActivity 
             switch (holder.getItemViewType()) {
                 case 3: // HeaderCell
                     HeaderCell headerCell = (HeaderCell) holder.itemView;
-                    if (position == ghostHeaderRow) {
+                    if (position == mediaHeaderRow) {
+                        headerCell.setText(LocaleController.getString(R.string.AlkoMediaHeader));
+                    } else if (position == ghostHeaderRow) {
                         headerCell.setText(LocaleController.getString("GhostMode", R.string.GhostMode));
                     } else if (position == bypassHeaderRow) {
                         headerCell.setText(LocaleController.getString("BypassRestrictions", R.string.BypassRestrictions));
@@ -160,7 +189,16 @@ public class AlkogramPrivacyPreferencesActivity extends BasePreferencesActivity 
                     break;
                 case 5: // TextCheckCell
                     TextCheckCell checkCell = (TextCheckCell) holder.itemView;
-                    if (position == hideReadRow) {
+                    if (position == stripMetadataRow) {
+                        checkCell.setTextAndCheck(LocaleController.getString(R.string.AlkoStripMetadata),
+                                ExteraConfig.alkoStripPhotoMetadata, false);
+                    } else if (position == saveRoundVideoRow) {
+                        checkCell.setTextAndCheck(LocaleController.getString(R.string.AlkoSaveRoundVideo),
+                                ExteraConfig.alkoSaveRoundVideo, false);
+                    } else if (position == secondsRow) {
+                        checkCell.setTextAndCheck(LocaleController.getString(R.string.FormatTimeWithSeconds),
+                                ExteraConfig.formatTimeWithSeconds, false);
+                    } else if (position == hideReadRow) {
                         checkCell.setTextAndCheck(
                                 LocaleController.getString("HideReadStatus", R.string.HideReadStatus),
                                 ExteraConfig.alkoHideRead,
@@ -218,7 +256,13 @@ public class AlkogramPrivacyPreferencesActivity extends BasePreferencesActivity 
                     break;
                 case 8: // TextInfoPrivacyCell
                     TextInfoPrivacyCell infoCell = (TextInfoPrivacyCell) holder.itemView;
-                    if (position == hideReadDetailRow) {
+                    if (position == stripMetadataDetailRow) {
+                        infoCell.setText(LocaleController.getString(R.string.AlkoStripMetadataDetail));
+                        infoCell.setBackground(Theme.getThemedDrawable(mContext, R.drawable.greydivider, Theme.key_windowBackgroundGrayShadow));
+                    } else if (position == saveRoundVideoDetailRow) {
+                        infoCell.setText(LocaleController.getString(R.string.AlkoSaveRoundVideoDetail));
+                        infoCell.setBackground(Theme.getThemedDrawable(mContext, R.drawable.greydivider, Theme.key_windowBackgroundGrayShadow));
+                    } else if (position == hideReadDetailRow) {
                         infoCell.setText(LocaleController.getString("HideReadStatusDetail", R.string.HideReadStatusDetail));
                         infoCell.setBackground(Theme.getThemedDrawable(mContext, R.drawable.greydivider, Theme.key_windowBackgroundGrayShadow));
                     } else if (position == hideTypingDetailRow) {

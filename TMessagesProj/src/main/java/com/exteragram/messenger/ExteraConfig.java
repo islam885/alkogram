@@ -46,6 +46,8 @@ public class ExteraConfig {
     public static boolean alkoSelfBotEnabled;
     public static boolean alkoHideOnline;
     public static boolean alkoHideVoiceRead;
+    public static volatile boolean alkoStripPhotoMetadata;
+    public static boolean alkoSaveRoundVideo;
 
     // Appearance
     public static float avatarCorners;
@@ -283,6 +285,8 @@ public class ExteraConfig {
             alkoSelfBotEnabled = preferences.getBoolean("alko_selfBotEnabled", true);
             alkoHideOnline = preferences.getBoolean("alko_hideOnline", false);
             alkoHideVoiceRead = preferences.getBoolean("alko_hideVoiceRead", false);
+            alkoStripPhotoMetadata = preferences.getBoolean("alko_stripPhotoMetadata", false);
+            alkoSaveRoundVideo = preferences.getBoolean("alko_saveRoundVideo", false);
 
             configLoaded = true;
         }

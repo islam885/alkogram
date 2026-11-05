@@ -15,6 +15,14 @@
     <string name="Preferences">Настройки exteraGram</string>
 
     <!-- Alkogram Settings -->
+    <string name="AlkoMediaHeader">Медиа и время сообщений</string>
+    <string name="AlkoStripMetadata">Удалять EXIF / геометки фото (JPEG)</string>
+    <string name="AlkoStripMetadataDetail">Перекодирует отправляемые копии JPEG без EXIF, GPS, модели устройства и даты съёмки, в том числе при отправке файлами и альбомами. Оригиналы не меняются. Качество может измениться. PNG, WebP, GIF, HEIC, RAW и видео не очищаются. При ошибке очистки отправка этого фото отменяется.</string>
+    <string name="AlkoStripMetadataFailed">Фото не отправлено: не удалось удалить метаданные.</string>
+    <string name="AlkoSaveRoundVideo">Разрешить сохранение видеокружочков</string>
+    <string name="AlkoSaveRoundVideoDetail">Добавляет «Сохранить в галерею как MP4» в меню долгого нажатия обычных видеокружочков. Защищённые и исчезающие медиа сохранять нельзя. Сначала загрузите видео.</string>
+    <string name="AlkoSaveRoundVideoMp4">Сохранить в галерею как MP4</string>
+    <string name="AlkoRoundVideoNotDownloaded">Сначала загрузите видеосообщение, затем снова выберите «Сохранить в галерею как MP4».</string>
     <string name="AlkogramSettings">Настройки Alkogram &amp; Приватность</string>
     <string name="GhostMode">Режим невидимки</string>
     <string name="HideReadStatus">Скрывать прочтение сообщений</string>

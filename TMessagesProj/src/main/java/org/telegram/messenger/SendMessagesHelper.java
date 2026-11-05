@@ -6393,6 +6393,20 @@ public class SendMessagesHelper extends BaseController implements NotificationCe
                 extension = null;
             }
         }
+        if (com.exteragram.messenger.ExteraConfig.alkoStripPhotoMetadata) {
+            try {
+                String cleanPath = com.exteragram.messenger.utils.AlkogramPhotoPrivacy.cleanJpeg(path, null);
+                if (cleanPath != null) {
+                    path = cleanPath;
+                    originalPath = cleanPath; // Do not reuse a previously uploaded, unclean document.
+                    extension = cleanPath.substring(cleanPath.lastIndexOf('.') + 1);
+                    uri = null;
+                }
+            } catch (Exception error) {
+                com.exteragram.messenger.utils.AlkogramPhotoPrivacy.showFailure(error);
+                return ERROR_TYPE_UNSUPPORTED; // Fail closed, including documents and multi-selection.
+            }
+        }
         final File f = new File(path);
         if (!f.exists() || f.length() == 0) {
             return ERROR_TYPE_UNSUPPORTED;
@@ -7395,7 +7409,26 @@ public class SendMessagesHelper extends BaseController implements NotificationCe
             }
         }
         final boolean groupMediaFinal = groupMedia;
+        final boolean stripPhotoMetadata = com.exteragram.messenger.ExteraConfig.alkoStripPhotoMetadata;
         mediaSendQueue.postRunnable(() -> {
+            // Prepare every local photo before cache lookup or album workers can send anything.
+            if (stripPhotoMetadata) {
+                try {
+                    for (SendingMediaInfo info : media) {
+                        if (!info.isVideo && info.videoEditedInfo == null && info.searchImage == null) {
+                            String cleanPath = com.exteragram.messenger.utils.AlkogramPhotoPrivacy.cleanJpeg(info.path, info.uri);
+                            if (cleanPath != null) {
+                                info.path = cleanPath;
+                                info.uri = null;
+                                info.canDeleteAfter = true;
+                            }
+                        }
+                    }
+                } catch (Exception error) {
+                    com.exteragram.messenger.utils.AlkogramPhotoPrivacy.showFailure(error);
+                    return; // Never fall back to the original JPEG on cleanup failure.
+                }
+            }
             long beginTime = System.currentTimeMillis();
             HashMap<SendingMediaInfo, MediaSendPrepareWorker> workers;
             int count = media.size();

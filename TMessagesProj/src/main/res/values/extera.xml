@@ -16,6 +16,14 @@
     <string name="Preferences">exteraGram Preferences</string>
 
     <!-- Alkogram Settings -->
+    <string name="AlkoMediaHeader">Media and message time</string>
+    <string name="AlkoStripMetadata">Remove photo EXIF / geotags (JPEG)</string>
+    <string name="AlkoStripMetadataDetail">Re-encodes outgoing JPEG copies without EXIF, GPS, device information or capture dates; also applies to files and albums. Originals stay unchanged. Quality may change. PNG, WebP, GIF, HEIC, RAW and videos are not cleaned. A cleanup error cancels sending the affected photo.</string>
+    <string name="AlkoStripMetadataFailed">Photo was not sent: metadata could not be removed.</string>
+    <string name="AlkoSaveRoundVideo">Allow saving round video messages</string>
+    <string name="AlkoSaveRoundVideoDetail">Adds Save to gallery as MP4 to the long-press menu for ordinary round videos. Protected or disappearing media cannot be saved. Download the video first.</string>
+    <string name="AlkoSaveRoundVideoMp4">Save to gallery as MP4</string>
+    <string name="AlkoRoundVideoNotDownloaded">Download this video message first, then choose Save to gallery as MP4 again.</string>
     <string name="AlkogramSettings">Alkogram Privacy &amp; Ghost</string>
     <string name="GhostMode">Ghost Mode</string>
     <string name="HideReadStatus">Hide Read Status</string>
