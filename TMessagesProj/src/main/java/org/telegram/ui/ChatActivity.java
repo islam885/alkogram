@@ -2352,6 +2352,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
         getNotificationCenter().addObserver(this, NotificationCenter.didLoadSendAsPeers);
         getNotificationCenter().addObserver(this, NotificationCenter.closeChats);
         getNotificationCenter().addObserver(this, NotificationCenter.messagesDeleted);
+        getNotificationCenter().addObserver(this, NotificationCenter.messagesDeletedPreserved);
         getNotificationCenter().addObserver(this, NotificationCenter.historyCleared);
         getNotificationCenter().addObserver(this, NotificationCenter.messageReceivedByServer);
         getNotificationCenter().addObserver(this, NotificationCenter.messageReceivedByAck);
@@ -2688,6 +2689,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
         getNotificationCenter().removeObserver(this, NotificationCenter.commentsRead);
         getNotificationCenter().removeObserver(this, NotificationCenter.changeRepliesCounter);
         getNotificationCenter().removeObserver(this, NotificationCenter.messagesDeleted);
+        getNotificationCenter().removeObserver(this, NotificationCenter.messagesDeletedPreserved);
         getNotificationCenter().removeObserver(this, NotificationCenter.historyCleared);
         getNotificationCenter().removeObserver(this, NotificationCenter.messageReceivedByServer);
         getNotificationCenter().removeObserver(this, NotificationCenter.messageReceivedByAck);
@@ -16794,7 +16796,45 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
             if (updated && chatAdapter != null) {
                 chatAdapter.notifyDataSetChanged(false);
             }
+        } else if (id == NotificationCenter.messagesDeletedPreserved) {
+            if (chatMode == MODE_SCHEDULED) {
+                return;
+            }
+            long preservedDialogId = (Long) args[0];
+            int loadIndex;
+            if (preservedDialogId == dialog_id) {
+                loadIndex = 0;
+            } else if (mergeDialogId != 0 && preservedDialogId == mergeDialogId) {
+                loadIndex = 1;
+            } else {
+                return;
+            }
+            ArrayList<Integer> preservedIds = (ArrayList<Integer>) args[1];
+            for (int mid : preservedIds) {
+                MessageObject object = messagesDict[loadIndex].get(mid);
+                if (object != null) {
+                    object.messageOwner.alkoDeleted = true;
+                }
+            }
+            if (chatListView != null) {
+                for (int i = 0; i < chatListView.getChildCount(); i++) {
+                    View child = chatListView.getChildAt(i);
+                    if (child instanceof ChatMessageCell) {
+                        ChatMessageCell cell = (ChatMessageCell) child;
+                        MessageObject object = cell.getMessageObject();
+                        if (object != null && object.getDialogId() == preservedDialogId && preservedIds.contains(object.getId())) {
+                            object.messageOwner.alkoDeleted = true;
+                            cell.setDeletedMessageAlpha(true);
+                        }
+                    }
+                }
+                // Albums draw their shared background in the parent, not in each cell.
+                chatListView.invalidate();
+            }
         } else if (id == NotificationCenter.messagesDeleted) {
+            if (args.length > 3 && Boolean.TRUE.equals(args[3])) {
+                return;
+            }
             boolean scheduled = (Boolean) args[2];
             if (scheduled != (chatMode == MODE_SCHEDULED)) {
                 return;

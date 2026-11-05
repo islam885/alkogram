@@ -17,7 +17,8 @@ public class MessageCustomParamsHelper {
                 !message.premiumEffectWasPlayed &&
                 message.originalLanguage == null &&
                 message.translatedToLanguage == null &&
-                message.translatedText == null;
+                message.translatedText == null &&
+                !message.alkoDeleted;
     }
 
     public static void copyParams(TLRPC.Message fromMessage, TLRPC.Message toMessage) {
@@ -31,6 +32,7 @@ public class MessageCustomParamsHelper {
         toMessage.originalLanguage = fromMessage.originalLanguage;
         toMessage.translatedToLanguage = fromMessage.translatedToLanguage;
         toMessage.translatedText = fromMessage.translatedText;
+        toMessage.alkoDeleted = fromMessage.alkoDeleted;
     }
 
 
@@ -79,6 +81,7 @@ public class MessageCustomParamsHelper {
             flags += message.originalLanguage != null ? 4 : 0;
             flags += message.translatedToLanguage != null ? 8 : 0;
             flags += message.translatedText != null ? 16 : 0;
+            flags += message.alkoDeleted ? 32 : 0;
         }
 
         @Override
@@ -110,6 +113,7 @@ public class MessageCustomParamsHelper {
         @Override
         public void readParams(AbstractSerializedData stream, boolean exception) {
             flags = stream.readInt32(true);
+            message.alkoDeleted = (flags & 32) != 0;
             if ((flags & 1) != 0) {
                 message.voiceTranscription = stream.readString(exception);
             }

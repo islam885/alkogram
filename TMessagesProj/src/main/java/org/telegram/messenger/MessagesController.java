@@ -13102,7 +13102,11 @@ public class MessagesController extends BaseController implements NotificationCe
     protected void deleteMessagesByPush(long dialogId, ArrayList<Integer> ids, long channelId) {
         getMessagesStorage().getStorageQueue().postRunnable(() -> {
             AndroidUtilities.runOnUIThread(() -> {
-                getNotificationCenter().postNotificationName(NotificationCenter.messagesDeleted, ids, channelId, false);
+                boolean preserved = com.exteragram.messenger.ExteraConfig.alkoAntiDelete;
+                getNotificationCenter().postNotificationName(NotificationCenter.messagesDeleted, ids, channelId, false, preserved);
+                if (preserved) {
+                    return;
+                }
                 if (channelId == 0) {
                     for (int b = 0, size2 = ids.size(); b < size2; b++) {
                         Integer id = ids.get(b);
@@ -16169,7 +16173,12 @@ public class MessagesController extends BaseController implements NotificationCe
                     if (arrayList == null) {
                         continue;
                     }
-                    getNotificationCenter().postNotificationName(NotificationCenter.messagesDeleted, arrayList, -dialogId, false);
+                    boolean preserved = com.exteragram.messenger.ExteraConfig.alkoAntiDelete;
+                    getNotificationCenter().postNotificationName(NotificationCenter.messagesDeleted, arrayList, -dialogId, false, preserved);
+                    if (preserved) {
+                        // Storage reports the retained rows separately; do not flag them for removal animations.
+                        continue;
+                    }
                     if (dialogId == 0) {
                         for (int b = 0, size2 = arrayList.size(); b < size2; b++) {
                             Integer id = arrayList.get(b);

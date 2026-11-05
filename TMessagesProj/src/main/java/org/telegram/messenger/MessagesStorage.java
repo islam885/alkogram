@@ -11971,8 +11971,77 @@ public class MessagesStorage extends BaseController {
         }
     }
 
+    private void markMessagesAsDeletedPreserved(long dialogId, ArrayList<Integer> messages) {
+        if (messages.isEmpty()) {
+            return;
+        }
+        LongSparseArray<ArrayList<Integer>> preservedByDialog = new LongSparseArray<>();
+        String where = "mid IN(" + TextUtils.join(",", messages) + ") AND " +
+                (dialogId != 0 ? "uid = " + dialogId : "is_channel = 0");
+        // Keep both history and topic copies, without touching media, TTL or download settings.
+        for (String table : new String[]{"messages_v2", "messages_topics"}) {
+            SQLiteCursor cursor = null;
+            SQLitePreparedStatement state = null;
+            try {
+                cursor = database.queryFinalized("SELECT mid, uid, custom_params FROM " + table + " WHERE " + where);
+                state = database.executeFast("UPDATE " + table + " SET custom_params = ? WHERE mid = ? AND uid = ?");
+                while (cursor.next()) {
+                    int mid = cursor.intValue(0);
+                    long did = cursor.longValue(1);
+                    TLRPC.Message localParams = new TLRPC.TL_message();
+                    NativeByteBuffer data = cursor.byteBufferValue(2);
+                    if (data != null) {
+                        try {
+                            MessageCustomParamsHelper.readLocalParams(localParams, data);
+                        } finally {
+                            data.reuse();
+                        }
+                    }
+                    localParams.alkoDeleted = true;
+                    data = MessageCustomParamsHelper.writeLocalParams(localParams);
+                    if (data == null) {
+                        continue;
+                    }
+                    try {
+                        state.requery();
+                        state.bindByteBuffer(1, data);
+                        state.bindInteger(2, mid);
+                        state.bindLong(3, did);
+                        state.step();
+                    } finally {
+                        data.reuse();
+                    }
+                    ArrayList<Integer> mids = preservedByDialog.get(did);
+                    if (mids == null) {
+                        mids = new ArrayList<>();
+                        preservedByDialog.put(did, mids);
+                    }
+                    if (!mids.contains(mid)) {
+                        mids.add(mid);
+                    }
+                }
+            } catch (Exception e) {
+                checkSQLException(e);
+            } finally {
+                if (cursor != null) {
+                    cursor.dispose();
+                }
+                if (state != null) {
+                    state.dispose();
+                }
+            }
+        }
+        AndroidUtilities.runOnUIThread(() -> {
+            for (int i = 0; i < preservedByDialog.size(); i++) {
+                getNotificationCenter().postNotificationName(NotificationCenter.messagesDeletedPreserved,
+                        preservedByDialog.keyAt(i), preservedByDialog.valueAt(i));
+            }
+        });
+    }
+
     private ArrayList<Long> markMessagesAsDeletedInternal(long dialogId, ArrayList<Integer> messages, boolean deleteFiles, boolean scheduled) {
         if (com.exteragram.messenger.ExteraConfig.alkoAntiDelete && !scheduled) {
+            markMessagesAsDeletedPreserved(dialogId, messages);
             return new ArrayList<>();
         }
         SQLiteCursor cursor = null;

@@ -1,0 +1,22 @@
+# Use this workspace to collaborate
+workspace:
+  id: c30ceadd-bcda-442d-8d3b-e99a985d73c3
+
+localResources:
+  specs:
+    - ../TMessagesProj/jni/voip/webrtc/modules/audio_coding/audio_network_adaptor/debug_dump.proto
+    - ../TMessagesProj/jni/third_party/breakpad/src/third_party/protobuf/protobuf/src/google/protobuf/descriptor.proto
+    - ../TMessagesProj/jni/third_party/breakpad/src/third_party/protobuf/protobuf/src/google/protobuf/unittest.proto
+    - ../TMessagesProj/jni/third_party/breakpad/src/third_party/protobuf/protobuf/src/google/protobuf/unittest_custom_options.proto
+    - ../TMessagesProj/jni/third_party/breakpad/src/third_party/protobuf/protobuf/src/google/protobuf/unittest_embed_optimize_for.proto
+    - ../TMessagesProj/jni/third_party/breakpad/src/third_party/protobuf/protobuf/src/google/protobuf/unittest_empty.proto
+    - ../TMessagesProj/jni/third_party/breakpad/src/third_party/protobuf/protobuf/src/google/protobuf/unittest_enormous_descriptor.proto
+    - ../TMessagesProj/jni/third_party/breakpad/src/third_party/protobuf/protobuf/src/google/protobuf/unittest_import.proto
+    - ../TMessagesProj/jni/third_party/breakpad/src/third_party/protobuf/protobuf/src/google/protobuf/unittest_import_lite.proto
+    - ../TMessagesProj/jni/third_party/breakpad/src/third_party/protobuf/protobuf/src/google/protobuf/unittest_lite.proto
+    - ../TMessagesProj/jni/third_party/breakpad/src/third_party/protobuf/protobuf/src/google/protobuf/unittest_lite_imports_nonlite.proto
+    - ../TMessagesProj/jni/third_party/breakpad/src/third_party/protobuf/protobuf/src/google/protobuf/unittest_mset.proto
+    - ../TMessagesProj/jni/third_party/breakpad/src/third_party/protobuf/protobuf/src/google/protobuf/unittest_no_generic_services.proto
+    - ../TMessagesProj/jni/third_party/breakpad/src/third_party/protobuf/protobuf/src/google/protobuf/unittest_optimize_for.proto
+    - ../TMessagesProj/jni/third_party/breakpad/src/third_party/protobuf/protobuf/src/google/protobuf/compiler/plugin.proto
+    - ../TMessagesProj/jni/third_party/breakpad/src/third_party/protobuf/protobuf/src/google/protobuf/compiler/cpp/cpp_test_bad_identifiers.proto

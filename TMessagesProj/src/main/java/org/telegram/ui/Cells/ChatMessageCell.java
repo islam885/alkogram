@@ -1205,6 +1205,8 @@ public class ChatMessageCell extends BaseCell implements SeekBar.SeekBarDelegate
 
     private final boolean ALPHA_PROPERTY_WORKAROUND = Build.VERSION.SDK_INT == 28;
     private float alphaInternal = 1f;
+    private float animationAlpha = 1f;
+    private float deletedMessageAlpha = 1f;
 
     private final TransitionParams transitionParams = new TransitionParams();
     private boolean edited;
@@ -4125,6 +4127,7 @@ public class ChatMessageCell extends BaseCell implements SeekBar.SeekBarDelegate
     }
 
     private void setMessageContent(MessageObject messageObject, MessageObject.GroupedMessages groupedMessages, boolean bottomNear, boolean topNear) {
+        setDeletedMessageAlpha(messageObject.messageOwner.alkoDeleted);
         if (messageObject.checkLayout() || currentPosition != null && lastHeight != AndroidUtilities.displaySize.y) {
             currentMessageObject = null;
         }
@@ -8658,6 +8661,7 @@ public class ChatMessageCell extends BaseCell implements SeekBar.SeekBarDelegate
     }
 
     public void setMessageObject(MessageObject messageObject, MessageObject.GroupedMessages groupedMessages, boolean bottomNear, boolean topNear) {
+        setDeletedMessageAlpha(messageObject != null && messageObject.messageOwner.alkoDeleted);
         if (attachedToWindow) {
             setMessageContent(messageObject, groupedMessages, bottomNear, topNear);
         } else {
@@ -13600,10 +13604,8 @@ public class ChatMessageCell extends BaseCell implements SeekBar.SeekBarDelegate
         }
 
         if ((drawBackground || transitionParams.animateDrawBackground) && currentBackgroundDrawable != null && (currentPosition == null || isDrawSelectionBackground() && (currentMessageObject.isMusic() || currentMessageObject.isDocument())) && !(enterTransitionInProgress && !currentMessageObject.isVoice())) {
-            float alphaInternal = this.alphaInternal;
-            if (fromParent) {
-                alphaInternal *= getAlpha();
-            }
+            // Parent drawing is outside the View alpha layer (also on the API 28 workaround).
+            float alphaInternal = fromParent ? getAlpha() : this.alphaInternal;
             if (hasSelectionOverlay()) {
 //                if ((isPressed() && isCheckPressed || !isCheckPressed && isPressed) && !textIsSelectionMode()) {
 //                    currentSelectedBackgroundAlpha = 1f;
@@ -18723,8 +18725,22 @@ public class ChatMessageCell extends BaseCell implements SeekBar.SeekBarDelegate
         return super.getAlpha();
     }
 
+    public void setDeletedMessageAlpha(boolean deleted) {
+        float value = deleted ? 0.5f : 1f;
+        if (deletedMessageAlpha != value) {
+            deletedMessageAlpha = value;
+            setAlpha(animationAlpha);
+            invalidate();
+            if (getParent() instanceof View) {
+                ((View) getParent()).invalidate();
+            }
+        }
+    }
+
     @Override
     public void setAlpha(float alpha) {
+        animationAlpha = alpha;
+        alpha *= deletedMessageAlpha;
         if ((alpha == 1f) != (getAlpha() == 1)) {
             invalidate();
         }

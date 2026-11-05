@@ -60945,6 +60945,7 @@ public class TLRPC {
         public int realId; //custom
         public int stickerVerified = 1; //custom
         public boolean isThreadMessage; //custom
+        public boolean alkoDeleted; //custom, local-only anti-delete marker
         public String voiceTranscription; //custom
         public boolean voiceTranscriptionOpen; //custom
         public boolean voiceTranscriptionRated; //custom
