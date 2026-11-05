@@ -132,6 +132,18 @@ public class AlkogramPrivacyPreferencesActivity extends BasePreferencesActivity 
         }
 
         @Override
+        public int getItemViewType(int position) {
+            if (position == ghostHeaderRow || position == bypassHeaderRow || position == antiDeleteHeaderRow || position == selfBotHeaderRow) {
+                return 3;
+            } else if (position == hideReadDetailRow || position == hideTypingDetailRow || position == hideOnlineDetailRow ||
+                       position == hideVoiceReadDetailRow || position == allowScreenshotsDetailRow || position == bypassNoForwardsDetailRow ||
+                       position == saveSelfDestructingDetailRow || position == antiDeleteDetailRow || position == selfBotDetailRow) {
+                return 8;
+            }
+            return 5;
+        }
+
+        @Override
         public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
             switch (holder.getItemViewType()) {
                 case 3: // HeaderCell
